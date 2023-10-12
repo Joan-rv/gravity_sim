@@ -31,6 +31,6 @@ void Point::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 float circle_distance(const Point& p1, const Point& p2) {
     sf::Vector2f vec = p1.get_pos() - p2.get_pos();
-    float distance = std::sqrt(vec.x*vec.x + vec.y*vec.y);
+    float distance = vec::length(vec);
     return distance - (p1.radius + p2.radius);
 }
