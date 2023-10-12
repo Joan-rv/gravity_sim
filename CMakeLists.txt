@@ -5,5 +5,10 @@ file(GLOB_RECURSE sources src/*.cpp src/*.h src/*.hpp)
 
 add_executable(gravity_sim ${sources})
 
-find_package(SFML 2.6 REQUIRED COMPONENTS graphics window system)
+include(FetchContent)
+FetchContent_Declare(SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 2.6.x
+    FIND_PACKAGE_ARGS COMPONENTS graphics window system)
+FetchContent_MakeAvailable(SFML)
 target_link_libraries(gravity_sim sfml-graphics sfml-window sfml-system)
