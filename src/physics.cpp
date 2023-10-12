@@ -14,7 +14,7 @@ void physics_sim(std::vector<Point>& points) {
     }
 }
 
-sf::Vector2f handle_collision(Point& p1, Point& p2) {
+sf::Vector2f handle_collision(Point& p1, Point& p2, float distance) {
     float m1 = p1.mass;
     float m2 = p2.mass;
     float e = p1.coeff_of_restitution;
@@ -24,7 +24,7 @@ sf::Vector2f handle_collision(Point& p1, Point& p2) {
     sf::Vector2f normal_vec = vec / vec::length(vec);
 
     float normal_impulse = ((m1*m2)*(1 + e)*vec::dot((v2 - v1), normal_vec))/(m1 + m2);
-    return normal_impulse/p1.mass * normal_vec;
+    return normal_impulse/p1.mass * normal_vec + normal_vec * distance;
 }
 
 void process_collisions(std::vector<Point>& points) {
@@ -35,8 +35,9 @@ void process_collisions(std::vector<Point>& points) {
                 continue;
             Point& p1 = points[i];
             Point& p2 = points[j];
-            if (circle_distance(p1, p2) < 0) {
-                new_vels[i] += handle_collision(p1, p2);
+            float distance = circle_distance(p1, p2);
+            if (distance < 0) {
+                new_vels[i] += handle_collision(p1, p2, distance);
             }
         }
     }

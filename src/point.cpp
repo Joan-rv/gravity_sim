@@ -15,7 +15,6 @@ sf::Vector2f Point::get_pos() const {return circle.getPosition();}
 void Point::add_gravity(Point p) {
     sf::Vector2f vec = p.get_pos() - get_pos();
     float distance = vec::length(vec);
-    if (distance <= p.radius + radius) return;
     forces += G * mass * p.mass * (vec / distance) / (distance*distance);
 }
 
