@@ -21,19 +21,7 @@ int main() {
                 window.close();
             if (event.type == sf::Event::MouseButtonPressed &&
                 event.mouseButton.button == sf::Mouse::Button::Left) {
-                Point new_p(
-                    100, 10, 0.8,
-                    sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
-                bool add_p = true;
-                for (const auto& p : points) {
-                    if (circle_distance(p, new_p) <= 0) {
-                        add_p = false;
-                        break;
-                    }
-                }
-                if (add_p) {
-                    points.push_back(new_p);
-                }
+                add_point(points, event.mouseButton.x, event.mouseButton.y);
             }
         }
 

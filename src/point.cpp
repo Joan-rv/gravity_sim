@@ -1,4 +1,5 @@
 #include <cmath>
+#include <vector>
 #include "point.hpp"
 #include "vecmath.hpp"
 
@@ -32,4 +33,20 @@ float circle_distance(const Point& p1, const Point& p2) {
     sf::Vector2f vec = p1.get_pos() - p2.get_pos();
     float distance = vec::length(vec);
     return distance - (p1.radius + p2.radius);
+}
+
+void add_point(std::vector<Point>& points, int x, int y) {
+    Point new_p(
+        100, 10, 0.8,
+        sf::Vector2f(x, y));
+    bool add_p = true;
+    for (const auto& p : points) {
+        if (circle_distance(p, new_p) <= 0) {
+            add_p = false;
+            break;
+        }
+    }
+    if (add_p) {
+        points.push_back(new_p);
+    }
 }

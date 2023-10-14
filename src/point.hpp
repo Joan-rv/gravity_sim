@@ -1,6 +1,7 @@
 #ifndef POINT_H
 #define POINT_H
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 class Point : public sf::Drawable {
     public:
@@ -24,4 +25,5 @@ class Point : public sf::Drawable {
 };
 
 float circle_distance(const Point& p1, const Point& p2);
+void add_point(std::vector<Point>& points, int x, int y);
 #endif
