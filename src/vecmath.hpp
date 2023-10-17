@@ -1,4 +1,5 @@
 #include <SFML/System/Vector2.hpp>
+#include <cmath>
 
 namespace vec {
 

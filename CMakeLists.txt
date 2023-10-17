@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(gravity_sim LANGUAGES CXX)
 
 file(GLOB_RECURSE sources src/*.cpp src/*.h src/*.hpp)
 
 add_executable(gravity_sim ${sources})
+
+target_include_directories(gravity_sim PRIVATE src)
 
 include(FetchContent)
 FetchContent_Declare(SFML

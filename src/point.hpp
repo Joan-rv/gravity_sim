@@ -16,9 +16,9 @@ class Point : public sf::Drawable {
         const float coeff_of_restitution;
 
         sf::Vector2f velocity = {0, 0};
+        sf::Vector2f forces = {0, 0};
  
     private:
-        sf::Vector2f forces = {0, 0};
         sf::CircleShape circle;
 
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
