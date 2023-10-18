@@ -1,12 +1,13 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <simulation.hpp>
 #include <vecmath.hpp>
 
 #define G 100
 
-void physics_sim(std::vector<Point>& points) {
+void Simulation::physics_sim() {
     for (int i = 0; i < points.size(); i++) {
         for (int j = 0; j < points.size(); j++) {
             if (i == j)
@@ -21,7 +22,7 @@ void physics_sim(std::vector<Point>& points) {
     }
 }
 
-sf::Vector2f handle_collision(Point& p1, Point& p2, float distance) {
+sf::Vector2f Simulation::handle_collision(Point& p1, Point& p2, float distance) {
     float m1 = p1.mass;
     float m2 = p2.mass;
     float e = p1.coeff_of_restitution;
@@ -36,7 +37,7 @@ sf::Vector2f handle_collision(Point& p1, Point& p2, float distance) {
     return normal_impulse / p1.mass * normal_vec;
 }
 
-void process_collisions(std::vector<Point>& points) {
+void Simulation::process_collisions() {
     std::vector<sf::Vector2f> new_vels(points.size(), {0, 0});
     for (int i = 0; i < points.size(); i++) {
         for (int j = 0; j < points.size(); j++) {
@@ -55,12 +56,41 @@ void process_collisions(std::vector<Point>& points) {
     }
 }
 
+void Simulation::move_screen(float dt) {
+    sf::Vector2f move_vec = {0, 0};
+    static float move_speed = 200;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+        move_vec += {0, 1};
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+        move_vec += {1, 0};
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+        move_vec += {0, -1};
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+        move_vec += {-1, 0};
+    }
+
+    if (move_vec != sf::Vector2(0.0f, 0.0f)) {
+        move_vec = move_vec / vec::length(move_vec);
+        move_speed += 40 * dt;
+        for (auto& point : points) {
+            point.move(move_vec * move_speed * dt);
+        }
+    } else {
+        move_speed = 200;
+    }
+}
+
 void Simulation::update(double dt) {
-    physics_sim(points);
-    process_collisions(points);
+    physics_sim();
+    process_collisions();
     for (auto& point : points) {
         point.integrate(dt);
     }
+    move_screen(dt);
 }
 
 void Simulation::add_point(int x, int y) {

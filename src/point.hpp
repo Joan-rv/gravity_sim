@@ -1,7 +1,7 @@
 #ifndef POINT_H
 #define POINT_H
 #include <SFML/Graphics.hpp>
-#include <vector>
+#include <SFML/System/Vector2.hpp>
 
 class Point : public sf::Drawable {
 public:
@@ -9,6 +9,7 @@ public:
           const sf::Vector2f& pos);
 
     sf::Vector2f get_pos() const;
+    void move(const sf::Vector2f& vec);
     void add_gravity(Point p);
     void integrate(float time_delta);
 
@@ -26,5 +27,4 @@ private:
 };
 
 float circle_distance(const Point& p1, const Point& p2);
-void add_point(std::vector<Point>& points, int x, int y);
 #endif

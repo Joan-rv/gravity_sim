@@ -11,5 +11,11 @@ public:
 
 private:
     std::vector<Point> points;
+
+    void physics_sim();
+    sf::Vector2f handle_collision(Point& p1, Point& p2, float distance);
+    void process_collisions();
+    void move_screen(float dt);
+
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

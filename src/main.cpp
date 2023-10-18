@@ -26,8 +26,6 @@ int main() {
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
                     sim.add_point(event.mouseButton.x, event.mouseButton.y);
                 }
-            case sf::Event::KeyPressed:
-                break;
             default:
                 break;
             }

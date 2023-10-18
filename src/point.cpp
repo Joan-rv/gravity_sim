@@ -13,6 +13,7 @@ Point::Point(float mass, float radius, float e, const sf::Vector2f& pos)
 }
 
 sf::Vector2f Point::get_pos() const { return circle.getPosition(); }
+void Point::move(const sf::Vector2f& vec) { circle.move(vec); }
 
 void Point::integrate(float time_delta) {
     velocity += (forces / mass) * time_delta;
