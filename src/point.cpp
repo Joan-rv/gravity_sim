@@ -1,17 +1,18 @@
 #include <cmath>
-#include <vector>
 #include <point.hpp>
 #include <vecmath.hpp>
+#include <vector>
 
 #define G 100
 
-Point::Point(float mass, float radius, float e, const sf::Vector2f& pos) : mass(mass), radius(radius), coeff_of_restitution(e) {
+Point::Point(float mass, float radius, float e, const sf::Vector2f& pos)
+    : mass(mass), radius(radius), coeff_of_restitution(e) {
     circle = sf::CircleShape(radius);
     circle.setOrigin(radius, radius);
     circle.setPosition(pos);
 }
 
-sf::Vector2f Point::get_pos() const {return circle.getPosition();}
+sf::Vector2f Point::get_pos() const { return circle.getPosition(); }
 
 void Point::integrate(float time_delta) {
     velocity += (forces / mass) * time_delta;

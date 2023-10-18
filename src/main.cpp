@@ -1,5 +1,6 @@
-#include <simulation.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <simulation.hpp>
 
 int main() {
     sf::ContextSettings settings;
@@ -9,18 +10,26 @@ int main() {
     Simulation sim;
 
     sf::Clock deltaClock;
+    sf::Time frameTime = sf::Time::Zero;
+
     const double dt = 0.01;
     double accumulator = 0.0;
-    sf::Time frameTime = sf::Time::Zero;
 
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            switch (event.type) {
+            case sf::Event::Closed:
                 window.close();
-            if (event.type == sf::Event::MouseButtonPressed &&
-                event.mouseButton.button == sf::Mouse::Button::Left) {
-                sim.add_point(event.mouseButton.x, event.mouseButton.y);
+                break;
+            case sf::Event::MouseButtonPressed:
+                if (event.mouseButton.button == sf::Mouse::Button::Left) {
+                    sim.add_point(event.mouseButton.x, event.mouseButton.y);
+                }
+            case sf::Event::KeyPressed:
+                break;
+            default:
+                break;
             }
         }
 

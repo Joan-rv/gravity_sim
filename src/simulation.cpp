@@ -9,13 +9,14 @@
 void physics_sim(std::vector<Point>& points) {
     for (int i = 0; i < points.size(); i++) {
         for (int j = 0; j < points.size(); j++) {
-            if (i==j)
+            if (i == j)
                 continue;
             Point& p1 = points[i];
             Point& p2 = points[j];
             sf::Vector2f vec = p2.get_pos() - p1.get_pos();
             float distance = vec::length(vec);
-            p1.forces += G * p1.mass * p2.mass * (vec / distance) / (distance*distance);
+            p1.forces += G * p1.mass * p2.mass * (vec / distance) /
+                         (distance * distance);
         }
     }
 }
@@ -29,16 +30,17 @@ sf::Vector2f handle_collision(Point& p1, Point& p2, float distance) {
     sf::Vector2f vec = p2.get_pos() - p1.get_pos();
     sf::Vector2f normal_vec = vec / vec::length(vec);
 
-    float normal_impulse = ((m1*m2)*(1 + e)*vec::dot((v2 - v1), normal_vec))/(m1 + m2);
+    float normal_impulse =
+        ((m1 * m2) * (1 + e) * vec::dot((v2 - v1), normal_vec)) / (m1 + m2);
     p1.forces -= vec::dot(normal_vec, p1.forces) * normal_vec;
-    return normal_impulse/p1.mass * normal_vec;
+    return normal_impulse / p1.mass * normal_vec;
 }
 
 void process_collisions(std::vector<Point>& points) {
-    std::vector<sf::Vector2f> new_vels(points.size(), {0, 0}); 
+    std::vector<sf::Vector2f> new_vels(points.size(), {0, 0});
     for (int i = 0; i < points.size(); i++) {
         for (int j = 0; j < points.size(); j++) {
-            if (i==j)
+            if (i == j)
                 continue;
             Point& p1 = points[i];
             Point& p2 = points[j];
@@ -62,9 +64,7 @@ void Simulation::update(double dt) {
 }
 
 void Simulation::add_point(int x, int y) {
-    Point new_p(
-        100, 10, 0.8,
-        sf::Vector2f(x, y));
+    Point new_p(100, 10, 0.8, sf::Vector2f(x, y));
     bool add_p = true;
     for (const auto& p : points) {
         if (circle_distance(p, new_p) <= 0) {
