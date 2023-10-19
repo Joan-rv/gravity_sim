@@ -22,7 +22,8 @@ void Simulation::physics_sim() {
     }
 }
 
-sf::Vector2f Simulation::handle_collision(Point& p1, Point& p2, float distance) {
+sf::Vector2f Simulation::handle_collision(Point& p1, Point& p2,
+                                          float distance) {
     float m1 = p1.mass;
     float m2 = p2.mass;
     float e = p1.coeff_of_restitution;
