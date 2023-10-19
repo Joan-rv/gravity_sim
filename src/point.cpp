@@ -1,6 +1,6 @@
 #include <cmath>
 #include <point.hpp>
-#include <vecmath.hpp>
+#include <math.hpp>
 #include <vector>
 
 #define G 100

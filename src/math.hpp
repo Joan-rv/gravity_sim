@@ -1,3 +1,5 @@
+#ifndef MATH_H
+#define MATH_H
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 
@@ -12,3 +14,4 @@ T dot(const sf::Vector2<T>& v1, const sf::Vector2<T>& v2) {
 }
 
 } // namespace vec
+#endif

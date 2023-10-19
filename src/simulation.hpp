@@ -1,3 +1,5 @@
+#ifndef SIMULATION_H
+#define SIMULATION_H
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -19,3 +21,4 @@ private:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
+#endif

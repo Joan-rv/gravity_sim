@@ -3,7 +3,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <simulation.hpp>
-#include <vecmath.hpp>
+#include <math.hpp>
 
 #define G 100
 
