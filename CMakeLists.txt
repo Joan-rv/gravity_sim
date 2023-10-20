@@ -15,3 +15,10 @@ FetchContent_Declare(SFML
     FIND_PACKAGE_ARGS COMPONENTS graphics window system)
 FetchContent_MakeAvailable(SFML)
 target_link_libraries(gravity_sim sfml-graphics sfml-window sfml-system)
+
+if ( CMAKE_COMPILER_IS_GNUCC )
+    target_compile_options(main PRIVATE -Wall -Wextra)
+endif()
+if ( MSVC )
+    target_compile_options(main PRIVATE /W4)
+endif()
