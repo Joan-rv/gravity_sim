@@ -3,6 +3,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 
+# define PI 3.14159265358979323846
+
 namespace vec {
 
 template <typename T> T length(const sf::Vector2<T>& vec) {

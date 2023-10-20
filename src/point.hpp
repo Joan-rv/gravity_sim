@@ -10,11 +10,15 @@ public:
 
     sf::Vector2f get_pos() const;
     void move(const sf::Vector2f& vec);
+    float get_radius() const;
+    void set_radius(float radius);
     void add_gravity(Point p);
+
     void integrate(float time_delta);
+    float distance(const Point& p) const;
+    float distance(const sf::Vector2f& vec) const;
 
     const float mass;
-    const float radius;
     const float coeff_of_restitution;
 
     sf::Vector2f velocity = {0, 0};
@@ -25,6 +29,4 @@ private:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
-
-float circle_distance(const Point& p1, const Point& p2);
 #endif

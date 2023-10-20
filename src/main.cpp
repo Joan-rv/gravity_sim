@@ -15,6 +15,8 @@ int main() {
     const double dt = 0.01;
     double accumulator = 0.0;
 
+    float density = 10;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -22,10 +24,21 @@ int main() {
             case sf::Event::Closed:
                 window.close();
                 break;
+            case sf::Event::KeyPressed:
+                if (event.key.code == sf::Keyboard::Escape)
+                    window.close();
+                break;
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
                     sim.add_point(event.mouseButton.x, event.mouseButton.y);
                 }
+                break;
+            case sf::Event::MouseButtonReleased:
+                if (event.mouseButton.button == sf::Mouse::Button::Left) {
+                        sim.consume_point(density);
+                    }
+                break;
+
             default:
                 break;
             }
