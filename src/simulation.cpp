@@ -91,9 +91,11 @@ void Simulation::move_screen(float dt) {
 void Simulation::update(double dt) {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
         if (new_p) {
-            new_p->shape.setRadius(new_p->shape.getRadius() + 2 * dt);
-            float new_radius = new_p->shape.getRadius();
-            new_p->shape.setOrigin(new_radius, new_radius);
+            if (new_p->shape.getRadius() < new_p->max_radius) {
+                new_p->shape.setRadius(new_p->shape.getRadius() + 2 * dt);
+                float new_radius = new_p->shape.getRadius();
+                new_p->shape.setOrigin(new_radius, new_radius);
+            }
         }
         return;
     }

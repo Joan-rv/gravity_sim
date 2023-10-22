@@ -15,7 +15,7 @@ int main() {
     const double dt = 0.01;
     double accumulator = 0.0;
 
-    float density = 10;
+    float density = 1;
 
     while (window.isOpen()) {
         sf::Event event;
