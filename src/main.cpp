@@ -57,7 +57,7 @@ int main() {
                 break;
             case sf::Event::MouseButtonReleased:
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
-                    sim.consume_point(density);
+                    sim.consume_point(density, event.mouseButton.x, event.mouseButton.y);
                 }
                 break;
 

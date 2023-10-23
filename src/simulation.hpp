@@ -17,7 +17,7 @@ class Simulation : public sf::Drawable {
 public:
     void update(double dt);
     void add_point(int x, int y);
-    void consume_point(float density);
+    void consume_point(float density, int x, int y);
 
 private:
     std::vector<Point> points;

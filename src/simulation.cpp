@@ -123,11 +123,19 @@ void Simulation::add_point(int x, int y) {
     new_p->shape.setOrigin(radius, radius);
 }
 
-void Simulation::consume_point(float density) {
+void Simulation::consume_point(float density, int x, int y) {
     if (new_p) {
+        sf::Vector2f vec1 = sf::Vector2f(x, y) - new_p->shape.getPosition();
+        sf::Vector2f vel_normal = vec1 / vec::length(vec1);
+        float vel_lenth = vec::length(vec1) - new_p->shape.getRadius();
+        sf::Vector2f start_vel = {0, 0};
+        if (vel_lenth > 0) {
+            start_vel = vel_lenth * vel_normal;
+        }
         float radius = new_p->shape.getRadius();
         float mass = density * PI * radius * radius;
         points.push_back(Point(mass, radius, 0.8, new_p->shape.getPosition()));
+        points.back().velocity = start_vel;
         new_p = std::nullopt;
     }
 }
