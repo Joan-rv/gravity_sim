@@ -1,7 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/Text.hpp>
-#include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 #include <simulation.hpp>
 #include <string>
@@ -59,6 +56,9 @@ int main() {
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
                     sim.consume_point(density, event.mouseButton.x, event.mouseButton.y);
                 }
+                break;
+            case sf::Event::MouseMoved:
+                sim.mouse_moved(event.mouseMove.x, event.mouseMove.y);
                 break;
 
             default:

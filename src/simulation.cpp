@@ -1,14 +1,17 @@
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <cmath>
 #include <math.hpp>
 #include <optional>
 #include <simulation.hpp>
 
 #define G 100
 #define MAX_RADIUS 1000
+#define START_VEL_RECT_WIDTH 2
 
 void Simulation::physics_sim() {
     for (int i = 0; i < points.size(); i++) {
@@ -110,6 +113,11 @@ void Simulation::update(double dt) {
 void Simulation::add_point(int x, int y) {
     constexpr float radius = 10;
     Point p(100, radius, 0.8, sf::Vector2f(x, y));
+    sf::RectangleShape rect({0, 0});
+    rect.setPosition(x, y);
+    rect.setOrigin(0, START_VEL_RECT_WIDTH / 2.0);
+    rect.setFillColor(sf::Color(39, 133, 255));
+
     float min_distance = MAX_RADIUS;
     for (const auto& point : points) {
         if (p.distance(point) < min_distance) {
@@ -118,16 +126,17 @@ void Simulation::add_point(int x, int y) {
     }
     if (min_distance < 0)
         return;
-    new_p.emplace(NewPoint{sf::CircleShape(radius), radius + min_distance});
+
+    new_p.emplace(NewPoint{sf::CircleShape(radius), rect, radius + min_distance});
     new_p->shape.setPosition(x, y);
     new_p->shape.setOrigin(radius, radius);
 }
 
 void Simulation::consume_point(float density, int x, int y) {
     if (new_p) {
-        sf::Vector2f vec1 = sf::Vector2f(x, y) - new_p->shape.getPosition();
-        sf::Vector2f vel_normal = vec1 / vec::length(vec1);
-        float vel_lenth = vec::length(vec1) - new_p->shape.getRadius();
+        sf::Vector2f vec = sf::Vector2f(x, y) - new_p->shape.getPosition();
+        sf::Vector2f vel_normal = vec / vec::length(vec);
+        float vel_lenth = vec::length(vec) - new_p->shape.getRadius();
         sf::Vector2f start_vel = {0, 0};
         if (vel_lenth > 0) {
             start_vel = vel_lenth * vel_normal;
@@ -140,9 +149,30 @@ void Simulation::consume_point(float density, int x, int y) {
     }
 }
 
+void Simulation::mouse_moved(int x, int y) {
+    if (new_p) {
+        sf::Vector2f click(x, y);
+        sf::Vector2f pos = new_p->shape.getPosition();
+        float radius = new_p->shape.getRadius();
+
+        sf::Vector2f vec = click - pos;
+        sf::Vector2f vel_normal = vec / vec::length(vec);
+        float vec_length = vec::length(vec) - radius;
+        float angle = 180.0 / PI * atan2f(vel_normal.y, vel_normal.x);
+
+        if (vec_length > 0) {
+            new_p->rect.setSize({vec_length, START_VEL_RECT_WIDTH});
+            new_p->rect.setRotation(angle);
+        } else {
+            new_p->rect.setSize({0, 0});
+        }
+    }
+}
+
 void Simulation::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     if (new_p) {
         target.draw(new_p->shape, states);
+        target.draw(new_p->rect, states);
     }
     for (auto& point : points) {
         target.draw(point, states);

@@ -2,6 +2,7 @@
 #define SIMULATION_H
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <optional>
@@ -10,6 +11,7 @@
 
 struct NewPoint {
     sf::CircleShape shape;
+    sf::RectangleShape rect;
     float max_radius;
 };
 
@@ -18,6 +20,7 @@ public:
     void update(double dt);
     void add_point(int x, int y);
     void consume_point(float density, int x, int y);
+    void mouse_moved(int x, int y);
 
 private:
     std::vector<Point> points;
