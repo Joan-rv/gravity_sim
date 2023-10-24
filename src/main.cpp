@@ -6,7 +6,7 @@
 int main() {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Gravity simulator");
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Gravity simulator", sf::Style::Default, settings);
 
     Simulation sim;
 
