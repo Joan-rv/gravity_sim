@@ -17,6 +17,7 @@ Arrow::Arrow(float len, float width, float head_width, sf::Vector2f pos) : len(l
 }
 
 void Arrow::set_length(float len) {
+    this->len = len;
     rect.setSize(sf::Vector2f(len, width));
     triangle.setOrigin(-len, head_width/2);
 }
@@ -32,6 +33,8 @@ void Arrow::set_color(sf::Color color) {
 }
 
 void Arrow::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    target.draw(triangle, states);
-    target.draw(rect, states);
+    if (len > 0) {
+        target.draw(triangle, states);
+        target.draw(rect, states);
+    }
 }
