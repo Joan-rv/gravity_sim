@@ -134,10 +134,10 @@ void Simulation::consume_point(float density, int x, int y) {
     if (new_p) {
         sf::Vector2f vec = sf::Vector2f(x, y) - new_p->shape.getPosition();
         sf::Vector2f vel_normal = vec / vec::length(vec);
-        float vel_lenth = vec::length(vec) - new_p->shape.getRadius();
+        float vel_length = vec::length(vec) - new_p->shape.getRadius();
         sf::Vector2f start_vel = {0, 0};
-        if (vel_lenth > 0) {
-            start_vel = vel_lenth * vel_normal;
+        if (vel_length > 0) {
+            start_vel = vel_length * vel_normal;
         }
         float radius = new_p->shape.getRadius();
         float mass = density * PI * radius * radius;
