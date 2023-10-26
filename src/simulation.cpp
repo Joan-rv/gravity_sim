@@ -1,3 +1,4 @@
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -11,7 +12,6 @@
 
 #define G 100
 #define MAX_RADIUS 1000
-#define START_VEL_RECT_WIDTH 2
 
 void Simulation::physics_sim() {
     for (int i = 0; i < points.size(); i++) {
@@ -120,10 +120,8 @@ void Simulation::update(double dt) {
 void Simulation::add_point(int x, int y) {
     constexpr float radius = 10;
     Point p(100, radius, 0.8, sf::Vector2f(x, y));
-    sf::RectangleShape rect({0, 0});
-    rect.setPosition(x, y);
-    rect.setOrigin(0, START_VEL_RECT_WIDTH / 2.0);
-    rect.setFillColor(sf::Color(39, 133, 255));
+    Arrow arrow(0, 2, 10, sf::Vector2f(x, y));
+    arrow.set_color(sf::Color(25, 125, 255));
 
     float min_distance = MAX_RADIUS;
     for (const auto& point : points) {
@@ -134,8 +132,7 @@ void Simulation::add_point(int x, int y) {
     if (min_distance < 0)
         return;
 
-    new_p.emplace(
-        NewPoint{sf::CircleShape(radius), rect, radius + min_distance});
+    new_p.emplace(NewPoint{sf::CircleShape(radius), arrow, radius + min_distance});
     new_p->shape.setPosition(x, y);
     new_p->shape.setOrigin(radius, radius);
 }
@@ -144,10 +141,10 @@ void Simulation::consume_point(float density, int x, int y) {
     if (new_p) {
         sf::Vector2f vec = sf::Vector2f(x, y) - new_p->shape.getPosition();
         sf::Vector2f vel_normal = vec / vec::length(vec);
-        float vel_lenth = vec::length(vec) - new_p->shape.getRadius();
+        float vel_length = vec::length(vec) - new_p->shape.getRadius();
         sf::Vector2f start_vel = {0, 0};
-        if (vel_lenth > 0) {
-            start_vel = vel_lenth * vel_normal;
+        if (vel_length > 0) {
+            start_vel = vel_length * vel_normal;
         }
         float radius = new_p->shape.getRadius();
         float mass = density * PI * radius * radius;
@@ -169,10 +166,10 @@ void Simulation::mouse_moved(int x, int y) {
         float angle = 180.0 / PI * atan2f(vel_normal.y, vel_normal.x);
 
         if (vec_length > 0) {
-            new_p->rect.setSize({vec_length, START_VEL_RECT_WIDTH});
-            new_p->rect.setRotation(angle);
+            new_p->arrow.set_length(vec_length);
+            new_p->arrow.set_rotation(angle);
         } else {
-            new_p->rect.setSize({0, 0});
+            new_p->arrow.set_length(0);
         }
     }
 }
@@ -180,7 +177,7 @@ void Simulation::mouse_moved(int x, int y) {
 void Simulation::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     if (new_p) {
         target.draw(new_p->shape, states);
-        target.draw(new_p->rect, states);
+        target.draw(new_p->arrow, states);
     }
     for (auto& point : points) {
         target.draw(point, states);

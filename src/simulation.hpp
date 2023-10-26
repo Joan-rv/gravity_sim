@@ -8,12 +8,12 @@
 #include <SFML/System/Vector2.hpp>
 #include <optional>
 #include <point.hpp>
-#include <utility>
+#include <arrow.hpp>
 #include <vector>
 
 struct NewPoint {
     sf::CircleShape shape;
-    sf::RectangleShape rect;
+    Arrow arrow;
     float max_radius;
 };
 
