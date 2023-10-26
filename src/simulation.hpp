@@ -5,8 +5,10 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <optional>
 #include <point.hpp>
+#include <utility>
 #include <vector>
 
 struct NewPoint {
@@ -27,7 +29,7 @@ private:
     std::optional<NewPoint> new_p;
 
     void physics_sim();
-    sf::Vector2f handle_collision(Point& p1, Point& p2, float distance);
+    std::pair<sf::Vector2f, sf::Vector2f> handle_collision(Point& p1, Point& p2, float distance);
     void process_collisions();
     void move_screen(float dt);
 

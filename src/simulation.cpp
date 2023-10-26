@@ -28,8 +28,8 @@ void Simulation::physics_sim() {
     }
 }
 
-sf::Vector2f Simulation::handle_collision(Point& p1, Point& p2,
-                                          float distance) {
+std::pair<sf::Vector2f, sf::Vector2f>
+Simulation::handle_collision(Point& p1, Point& p2, float distance) {
     float m1 = p1.mass;
     float m2 = p2.mass;
     float e = p1.coeff_of_restitution;
@@ -40,12 +40,15 @@ sf::Vector2f Simulation::handle_collision(Point& p1, Point& p2,
 
     float normal_impulse =
         ((m1 * m2) * (1 + e) * vec::dot((v2 - v1), normal_vec)) / (m1 + m2);
-    p1.forces -= vec::dot(normal_vec, p1.forces) * normal_vec;
-    return normal_impulse / p1.mass * normal_vec;
+    sf::Vector2f vel = normal_impulse / p1.mass * normal_vec;
+    sf::Vector2f force = vec::dot(normal_vec, p1.forces) * normal_vec;
+    return std::pair{vel, force};
 }
 
+#include <iostream>
 void Simulation::process_collisions() {
     std::vector<sf::Vector2f> new_vels(points.size(), {0, 0});
+    std::vector<sf::Vector2f> new_forces(points.size(), {0, 0});
     for (int i = 0; i < points.size(); i++) {
         for (int j = 0; j < points.size(); j++) {
             if (i == j)
@@ -54,12 +57,16 @@ void Simulation::process_collisions() {
             Point& p2 = points[j];
             float distance = p1.distance(p2);
             if (distance < 0) {
-                new_vels[i] += handle_collision(p1, p2, distance);
+                auto [vel, force] = handle_collision(p1, p2, distance);
+
+                new_vels[i] += vel;
+                new_forces[i] -= force;
             }
         }
     }
     for (int i = 0; i < points.size(); i++) {
         points[i].velocity += new_vels[i];
+        points[i].forces += new_forces[i];
     }
 }
 
@@ -127,7 +134,8 @@ void Simulation::add_point(int x, int y) {
     if (min_distance < 0)
         return;
 
-    new_p.emplace(NewPoint{sf::CircleShape(radius), rect, radius + min_distance});
+    new_p.emplace(
+        NewPoint{sf::CircleShape(radius), rect, radius + min_distance});
     new_p->shape.setPosition(x, y);
     new_p->shape.setOrigin(radius, radius);
 }
