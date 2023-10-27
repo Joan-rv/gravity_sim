@@ -29,7 +29,7 @@ private:
     std::optional<NewPoint> new_p;
 
     void physics_sim();
-    std::pair<sf::Vector2f, sf::Vector2f> handle_collision(Point& p1, Point& p2, float distance);
+    std::pair<sf::Vector2f, sf::Vector2f> handle_collision(Point& p1, Point& p2);
     void process_collisions();
     void move_screen(float dt);
 

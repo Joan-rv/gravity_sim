@@ -14,8 +14,8 @@
 #define MAX_RADIUS 1000
 
 void Simulation::physics_sim() {
-    for (int i = 0; i < points.size(); i++) {
-        for (int j = 0; j < points.size(); j++) {
+    for (std::size_t i = 0; i < points.size(); i++) {
+        for (std::size_t j = 0; j < points.size(); j++) {
             if (i == j)
                 continue;
             Point& p1 = points[i];
@@ -29,7 +29,7 @@ void Simulation::physics_sim() {
 }
 
 std::pair<sf::Vector2f, sf::Vector2f>
-Simulation::handle_collision(Point& p1, Point& p2, float distance) {
+Simulation::handle_collision(Point& p1, Point& p2) {
     float m1 = p1.mass;
     float m2 = p2.mass;
     float e = p1.coeff_of_restitution;
@@ -49,22 +49,22 @@ Simulation::handle_collision(Point& p1, Point& p2, float distance) {
 void Simulation::process_collisions() {
     std::vector<sf::Vector2f> new_vels(points.size(), {0, 0});
     std::vector<sf::Vector2f> new_forces(points.size(), {0, 0});
-    for (int i = 0; i < points.size(); i++) {
-        for (int j = 0; j < points.size(); j++) {
+    for (std::size_t i = 0; i < points.size(); i++) {
+        for (std::size_t j = 0; j < points.size(); j++) {
             if (i == j)
                 continue;
             Point& p1 = points[i];
             Point& p2 = points[j];
             float distance = p1.distance(p2);
             if (distance < 0) {
-                auto [vel, force] = handle_collision(p1, p2, distance);
+                auto [vel, force] = handle_collision(p1, p2);
 
                 new_vels[i] += vel;
                 new_forces[i] -= force;
             }
         }
     }
-    for (int i = 0; i < points.size(); i++) {
+    for (std::size_t i = 0; i < points.size(); i++) {
         points[i].velocity += new_vels[i];
         points[i].forces += new_forces[i];
     }
