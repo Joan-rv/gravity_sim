@@ -28,8 +28,8 @@ void Simulation::physics_sim() {
     }
 }
 
-std::pair<sf::Vector2f, sf::Vector2f>
-Simulation::handle_collision(Point& p1, Point& p2) {
+std::pair<sf::Vector2f, sf::Vector2f> Simulation::handle_collision(Point& p1,
+                                                                   Point& p2) {
     float m1 = p1.mass;
     float m2 = p2.mass;
     float e = p1.coeff_of_restitution;
@@ -45,7 +45,6 @@ Simulation::handle_collision(Point& p1, Point& p2) {
     return std::pair{vel, force};
 }
 
-#include <iostream>
 void Simulation::process_collisions() {
     std::vector<sf::Vector2f> new_vels(points.size(), {0, 0});
     std::vector<sf::Vector2f> new_forces(points.size(), {0, 0});
@@ -132,7 +131,8 @@ void Simulation::add_point(int x, int y) {
     if (min_distance < 0)
         return;
 
-    new_p.emplace(NewPoint{sf::CircleShape(radius), arrow, radius + min_distance});
+    new_p.emplace(
+        NewPoint{sf::CircleShape(radius), arrow, radius + min_distance});
     new_p->shape.setPosition(x, y);
     new_p->shape.setOrigin(radius, radius);
 }
