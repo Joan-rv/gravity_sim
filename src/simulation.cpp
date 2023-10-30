@@ -6,6 +6,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <cmath>
+#include <collisions.hpp>
 #include <math.hpp>
 #include <optional>
 #include <simulation.hpp>
@@ -28,8 +29,7 @@ void Simulation::physics_sim() {
     }
 }
 
-std::pair<sf::Vector2f, sf::Vector2f> Simulation::handle_collision(Point& p1,
-                                                                   Point& p2) {
+sf::Vector2f Simulation::handle_collision(Point& p1, Point& p2) {
     float m1 = p1.mass;
     float m2 = p2.mass;
     float e = p1.coeff_of_restitution;
@@ -41,8 +41,7 @@ std::pair<sf::Vector2f, sf::Vector2f> Simulation::handle_collision(Point& p1,
     float normal_impulse =
         ((m1 * m2) * (1 + e) * vec::dot((v2 - v1), normal_vec)) / (m1 + m2);
     sf::Vector2f vel = normal_impulse / p1.mass * normal_vec;
-    sf::Vector2f force = vec::dot(normal_vec, p1.forces) * normal_vec;
-    return std::pair{vel, force};
+    return vel;
 }
 
 void Simulation::process_collisions() {
@@ -56,17 +55,16 @@ void Simulation::process_collisions() {
             Point& p2 = points[j];
             float distance = p1.distance(p2);
             if (distance < 0) {
-                auto [vel, force] = handle_collision(p1, p2);
+                auto vel = handle_collision(p1, p2);
 
                 new_vels[i] += vel;
-                new_forces[i] -= force;
             }
         }
     }
     for (std::size_t i = 0; i < points.size(); i++) {
         points[i].velocity += new_vels[i];
-        points[i].forces += new_forces[i];
     }
+    handle_collisions(points);
 }
 
 void Simulation::move_screen(float dt) {

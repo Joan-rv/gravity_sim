@@ -6,9 +6,9 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <arrow.hpp>
 #include <optional>
 #include <point.hpp>
-#include <arrow.hpp>
 #include <vector>
 
 struct NewPoint {
@@ -29,7 +29,7 @@ private:
     std::optional<NewPoint> new_p;
 
     void physics_sim();
-    std::pair<sf::Vector2f, sf::Vector2f> handle_collision(Point& p1, Point& p2);
+    sf::Vector2f handle_collision(Point& p1, Point& p2);
     void process_collisions();
     void move_screen(float dt);
 
