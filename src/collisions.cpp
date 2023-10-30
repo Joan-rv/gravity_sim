@@ -14,6 +14,7 @@ void position_contraints(std::vector<Collision>& collisions) {
     for (auto& collision : collisions) {
         float distance = collision.p1.distance(collision.p2);
         collision.p1.move(0.2f * distance * collision.normal);
+        collision.p2.move(-0.2f * distance * collision.normal);
     }
 }
 
