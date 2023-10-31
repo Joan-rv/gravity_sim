@@ -29,30 +29,11 @@ void velocity_contraints(std::vector<Collision>& collisions) {
                         (inv_mass1 + inv_mass2);
         impulse = -std::fmax(impulse, 0);
 
-        collision.p1.velocity += inv_mass1 * impulse * collision.normal;
-        collision.p2.velocity -= inv_mass2 * impulse * collision.normal;
+        collision.p1.velocity += inv_mass1 * collision.p1.coeff_of_restitution *
+                                 impulse * collision.normal;
+        collision.p2.velocity -= inv_mass1 * collision.p2.coeff_of_restitution *
+                                 impulse * collision.normal;
     }
-    /*
-    for (auto& collision : collisions) {
-        // Calculate relative velocity of p1 and p2 along the collision normal
-        sf::Vector2f relativeVelocity =
-            collision.p1.velocity - collision.p2.velocity;
-        float relativeSpeed = vec::dot(relativeVelocity, collision.normal);
-
-        // Check if objects are moving toward each other
-        if (relativeSpeed > 0) {
-            // Calculate the impulse (change in momentum) required to resolve
-            // the collision
-            float impulse = -2.0f * relativeSpeed /
-                            (1 / collision.p1.mass + 1 / collision.p2.mass);
-
-            // Update velocities of p1 and p2 based on the impulse and normal
-            sf::Vector2f impulseVector = impulse * collision.normal;
-            collision.p1.velocity += (1 / collision.p1.mass) * impulseVector;
-            collision.p2.velocity -= (1 / collision.p2.mass) * impulseVector;
-        }
-    }
-    */
 }
 
 void handle_collisions(std::vector<Point>& points) {
