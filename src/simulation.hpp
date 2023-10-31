@@ -29,8 +29,6 @@ private:
     std::optional<NewPoint> new_p;
 
     void physics_sim();
-    sf::Vector2f handle_collision(Point& p1, Point& p2);
-    void process_collisions();
     void move_screen(float dt);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

@@ -29,44 +29,6 @@ void Simulation::physics_sim() {
     }
 }
 
-sf::Vector2f Simulation::handle_collision(Point& p1, Point& p2) {
-    float m1 = p1.mass;
-    float m2 = p2.mass;
-    float e = p1.coeff_of_restitution;
-    sf::Vector2f v1 = p1.velocity;
-    sf::Vector2f v2 = p2.velocity;
-    sf::Vector2f vec = p2.get_pos() - p1.get_pos();
-    sf::Vector2f normal_vec = vec / vec::length(vec);
-
-    float normal_impulse =
-        ((m1 * m2) * (1 + e) * vec::dot((v2 - v1), normal_vec)) / (m1 + m2);
-    sf::Vector2f vel = normal_impulse / p1.mass * normal_vec;
-    return vel;
-}
-
-void Simulation::process_collisions() {
-    std::vector<sf::Vector2f> new_vels(points.size(), {0, 0});
-    std::vector<sf::Vector2f> new_forces(points.size(), {0, 0});
-    for (std::size_t i = 0; i < points.size(); i++) {
-        for (std::size_t j = 0; j < points.size(); j++) {
-            if (i == j)
-                continue;
-            Point& p1 = points[i];
-            Point& p2 = points[j];
-            float distance = p1.distance(p2);
-            if (distance < 0) {
-                auto vel = handle_collision(p1, p2);
-
-                new_vels[i] += vel;
-            }
-        }
-    }
-    for (std::size_t i = 0; i < points.size(); i++) {
-        points[i].velocity += new_vels[i];
-    }
-    handle_collisions(points);
-}
-
 void Simulation::move_screen(float dt) {
     sf::Vector2f move_vec = {0, 0};
     static float move_speed = 200;
@@ -107,7 +69,7 @@ void Simulation::update(double dt) {
         return;
     }
     physics_sim();
-    process_collisions();
+    handle_collisions(points);
     for (auto& point : points) {
         point.integrate(dt);
     }
