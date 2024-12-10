@@ -34,6 +34,12 @@ int main() {
             case sf::Event::Closed:
                 window.close();
                 break;
+            case sf::Event::Resized: {
+                sf::FloatRect visible_area(0, 0, event.size.width,
+                                           event.size.height);
+                window.setView(sf::View(visible_area));
+                break;
+            }
             case sf::Event::KeyPressed:
                 switch (event.key.code) {
                 case sf::Keyboard::Escape:
