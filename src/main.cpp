@@ -1,3 +1,4 @@
+#include "SFML/System/Vector2.hpp"
 #include "SFML/Window/Keyboard.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -27,6 +28,8 @@ int main() {
     ui_text.setCharacterSize(18);
     ui_text.setString("Density: " + std::to_string(sim.get_density()));
 
+    sf::View view = window.getView();
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -35,9 +38,12 @@ int main() {
                 window.close();
                 break;
             case sf::Event::Resized: {
-                sf::FloatRect visible_area(0, 0, event.size.width,
-                                           event.size.height);
-                window.setView(sf::View(visible_area));
+                sf::Vector2f size(event.size.width, event.size.height);
+                sf::Vector2f size_delta = size - view.getSize();
+                // center moves because of size increase
+                view.setCenter(view.getCenter() + size_delta / 2.f);
+                view.setSize(size);
+                window.setView(view);
                 break;
             }
             case sf::Event::KeyPressed:
