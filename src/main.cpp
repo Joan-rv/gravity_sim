@@ -59,17 +59,24 @@ int main() {
                 break;
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
-                    sim.add_point(event.mouseButton.x, event.mouseButton.y);
+                    sf::Vector2f cords = window.mapPixelToCoords(
+                        sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                    sim.add_point(cords.x, cords.y);
                 }
                 break;
             case sf::Event::MouseButtonReleased:
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
-                    sim.consume_point(event.mouseButton.x, event.mouseButton.y);
+                    sf::Vector2f cords = window.mapPixelToCoords(
+                        sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                    sim.consume_point(cords.x, cords.y);
                 }
                 break;
-            case sf::Event::MouseMoved:
-                sim.mouse_moved(event.mouseMove.x, event.mouseMove.y);
+            case sf::Event::MouseMoved: {
+                sf::Vector2f cords = window.mapPixelToCoords(
+                    sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
+                sim.mouse_moved(cords.x, cords.y);
                 break;
+            }
 
             default:
                 break;
