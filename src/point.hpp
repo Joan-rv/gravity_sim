@@ -6,7 +6,7 @@
 class Point : public sf::Drawable {
 public:
     Point(float mass, float radius, float coeff_of_restitution,
-          const sf::Vector2f& pos);
+          const sf::Vector2f& pos, sf::Color color);
 
     sf::Vector2f get_pos() const;
     void move(const sf::Vector2f& vec);

@@ -21,12 +21,15 @@ class Simulation : public sf::Drawable {
 public:
     void update(double dt);
     void add_point(int x, int y);
-    void consume_point(float density, int x, int y);
+    void consume_point(int x, int y);
     void mouse_moved(int x, int y);
+    void set_density(double density);
+    double get_density();
 
 private:
     std::vector<Point> points;
     std::optional<NewPoint> new_p;
+    double density = 10;
 
     void physics_sim();
     void move_screen(float dt);

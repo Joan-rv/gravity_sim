@@ -6,11 +6,13 @@
 
 #define G 100
 
-Point::Point(float mass, float radius, float e, const sf::Vector2f& pos)
+Point::Point(float mass, float radius, float e, const sf::Vector2f& pos,
+             sf::Color color)
     : mass(mass), coeff_of_restitution(e) {
     circle = sf::CircleShape(radius);
     circle.setOrigin(radius, radius);
     circle.setPosition(pos);
+    circle.setFillColor(color);
 }
 
 sf::Vector2f Point::get_pos() const { return circle.getPosition(); }

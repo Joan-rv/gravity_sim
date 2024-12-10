@@ -78,7 +78,7 @@ void Simulation::update(double dt) {
 
 void Simulation::add_point(int x, int y) {
     constexpr float radius = 10;
-    Point p(100, radius, 0.8, sf::Vector2f(x, y));
+    Point p(100, radius, 0.8, sf::Vector2f(x, y), sf::Color::White);
     Arrow arrow(0, 2, 10, sf::Vector2f(x, y));
     arrow.set_color(sf::Color(25, 125, 255));
 
@@ -94,10 +94,11 @@ void Simulation::add_point(int x, int y) {
     new_p.emplace(
         NewPoint{sf::CircleShape(radius), arrow, radius + min_distance});
     new_p->shape.setPosition(x, y);
+    new_p->shape.setFillColor(sf::Color(255, 255 - density, 255 - density));
     new_p->shape.setOrigin(radius, radius);
 }
 
-void Simulation::consume_point(float density, int x, int y) {
+void Simulation::consume_point(int x, int y) {
     if (new_p) {
         sf::Vector2f vec = sf::Vector2f(x, y) - new_p->shape.getPosition();
         sf::Vector2f vel_normal = vec / vec::length(vec);
@@ -108,7 +109,8 @@ void Simulation::consume_point(float density, int x, int y) {
         }
         float radius = new_p->shape.getRadius();
         float mass = density * PI * radius * radius;
-        points.push_back(Point(mass, radius, 0.8, new_p->shape.getPosition()));
+        points.push_back(Point(mass, radius, 0.8, new_p->shape.getPosition(),
+                               new_p->shape.getFillColor()));
         points.back().velocity = start_vel;
         new_p = std::nullopt;
     }
@@ -133,6 +135,17 @@ void Simulation::mouse_moved(int x, int y) {
         }
     }
 }
+
+void Simulation::set_density(double new_density) {
+    if (new_density > 0 && new_density <= 255) {
+        density = new_density;
+    }
+    if (new_p) {
+        // change color
+        new_p->shape.setFillColor(sf::Color(255, 255 - density, 255 - density));
+    }
+}
+double Simulation::get_density() { return density; }
 
 void Simulation::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     if (new_p) {

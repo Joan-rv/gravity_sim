@@ -6,7 +6,8 @@
 int main() {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Gravity simulator", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Gravity simulator",
+                            sf::Style::Default, settings);
 
     Simulation sim;
 
@@ -16,8 +17,6 @@ int main() {
     const double dt = 0.01;
     double accumulator = 0.0;
 
-    float density = 10;
-
     sf::Font font;
     if (!font.loadFromFile("resources/JetBrainsMono-Regular.ttf")) {
         return -1;
@@ -25,7 +24,7 @@ int main() {
     sf::Text ui_text;
     ui_text.setFont(font);
     ui_text.setCharacterSize(18);
-    ui_text.setString("Density: " + std::to_string(density));
+    ui_text.setString("Density: " + std::to_string(sim.get_density()));
 
     while (window.isOpen()) {
         sf::Event event;
@@ -38,14 +37,13 @@ int main() {
                 if (event.key.code == sf::Keyboard::Escape)
                     window.close();
                 if (event.key.code == sf::Keyboard::E) {
-                    density += 1;
+                    sim.set_density(sim.get_density() + 1);
                 }
                 if (event.key.code == sf::Keyboard::Q) {
-                    if (density > 1) {
-                        density -= 1;
-                    }
+                    sim.set_density(sim.get_density() - 1);
                 }
-                ui_text.setString("Density: " + std::to_string(density));
+                ui_text.setString("Density: " +
+                                  std::to_string(sim.get_density()));
                 break;
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
@@ -54,7 +52,7 @@ int main() {
                 break;
             case sf::Event::MouseButtonReleased:
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
-                    sim.consume_point(density, event.mouseButton.x, event.mouseButton.y);
+                    sim.consume_point(event.mouseButton.x, event.mouseButton.y);
                 }
                 break;
             case sf::Event::MouseMoved:
