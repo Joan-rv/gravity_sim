@@ -30,7 +30,7 @@ void velocity_contraints(std::vector<Collision>& collisions) {
 
         collision.p1.velocity += inv_mass1 * collision.p1.coeff_of_restitution *
                                  impulse * collision.normal;
-        collision.p2.velocity -= inv_mass1 * collision.p2.coeff_of_restitution *
+        collision.p2.velocity -= inv_mass2 * collision.p2.coeff_of_restitution *
                                  impulse * collision.normal;
     }
 }
