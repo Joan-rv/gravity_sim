@@ -1,3 +1,4 @@
+#include "SFML/Window/Keyboard.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <simulation.hpp>
@@ -34,13 +35,18 @@ int main() {
                 window.close();
                 break;
             case sf::Event::KeyPressed:
-                if (event.key.code == sf::Keyboard::Escape)
+                switch (event.key.code) {
+                case sf::Keyboard::Escape:
                     window.close();
-                if (event.key.code == sf::Keyboard::E) {
+                    break;
+                case sf::Keyboard::E:
                     sim.set_density(sim.get_density() + 1);
-                }
-                if (event.key.code == sf::Keyboard::Q) {
+                    break;
+                case sf::Keyboard::Q:
                     sim.set_density(sim.get_density() - 1);
+                    break;
+                default:
+                    break;
                 }
                 ui_text.setString("Density: " +
                                   std::to_string(sim.get_density()));
