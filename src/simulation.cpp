@@ -76,10 +76,10 @@ void Simulation::update(double dt) {
     move_screen(dt);
 }
 
-void Simulation::add_point(int x, int y) {
+void Simulation::add_point(sf::Vector2f mouse) {
     constexpr float radius = 10;
-    Point p(100, radius, 0.8, sf::Vector2f(x, y), sf::Color::White);
-    Arrow arrow(0, 2, 10, sf::Vector2f(x, y));
+    Point p(100, radius, 0.8, mouse, sf::Color::White);
+    Arrow arrow(0, 2, 10, mouse);
     arrow.set_color(sf::Color(25, 125, 255));
 
     float min_distance = MAX_RADIUS;
@@ -93,14 +93,14 @@ void Simulation::add_point(int x, int y) {
 
     new_p.emplace(
         NewPoint{sf::CircleShape(radius), arrow, radius + min_distance});
-    new_p->shape.setPosition(x, y);
+    new_p->shape.setPosition(mouse);
     new_p->shape.setFillColor(sf::Color(255, 255 - density, 255 - density));
     new_p->shape.setOrigin(radius, radius);
 }
 
-void Simulation::consume_point(int x, int y) {
+void Simulation::consume_point(sf::Vector2f mouse) {
     if (new_p) {
-        sf::Vector2f vec = sf::Vector2f(x, y) - new_p->shape.getPosition();
+        sf::Vector2f vec = mouse - new_p->shape.getPosition();
         sf::Vector2f vel_normal = vec / vec::length(vec);
         float vel_length = vec::length(vec) - new_p->shape.getRadius();
         sf::Vector2f start_vel = {0, 0};
@@ -116,13 +116,12 @@ void Simulation::consume_point(int x, int y) {
     }
 }
 
-void Simulation::mouse_moved(int x, int y) {
+void Simulation::mouse_moved(sf::Vector2f mouse) {
     if (new_p) {
-        sf::Vector2f click(x, y);
         sf::Vector2f pos = new_p->shape.getPosition();
         float radius = new_p->shape.getRadius();
 
-        sf::Vector2f vec = click - pos;
+        sf::Vector2f vec = mouse - pos;
         sf::Vector2f vel_normal = vec / vec::length(vec);
         float vec_length = vec::length(vec) - radius;
         float angle = 180.0 / PI * atan2f(vel_normal.y, vel_normal.x);

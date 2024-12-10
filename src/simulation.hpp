@@ -20,9 +20,9 @@ struct NewPoint {
 class Simulation : public sf::Drawable {
 public:
     void update(double dt);
-    void add_point(int x, int y);
-    void consume_point(int x, int y);
-    void mouse_moved(int x, int y);
+    void add_point(sf::Vector2f mouse);
+    void consume_point(sf::Vector2f mouse);
+    void mouse_moved(sf::Vector2f mouse);
     void set_density(double density);
     double get_density();
 
