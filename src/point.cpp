@@ -2,7 +2,6 @@
 #include <cmath>
 #include <math.hpp>
 #include <point.hpp>
-#include <vector>
 
 #define G 100
 

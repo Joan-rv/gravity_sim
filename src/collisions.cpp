@@ -1,6 +1,5 @@
 #include "math.hpp"
 #include <SFML/System/Vector2.hpp>
-#include <algorithm>
 #include <cstdlib>
 #include <point.hpp>
 #include <vector>
