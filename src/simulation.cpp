@@ -29,34 +29,6 @@ void Simulation::physics_sim() {
     }
 }
 
-void Simulation::move_screen(float dt) {
-    sf::Vector2f move_vec = {0, 0};
-    static float move_speed = 200;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        move_vec += {0, 1};
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-        move_vec += {1, 0};
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        move_vec += {0, -1};
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-        move_vec += {-1, 0};
-    }
-
-    if (move_vec != sf::Vector2(0.0f, 0.0f)) {
-        move_vec = move_vec / vec::length(move_vec);
-        move_speed += 40 * dt;
-        for (auto& point : points) {
-            point.move(move_vec * move_speed * dt);
-        }
-    } else {
-        move_speed = 200;
-    }
-}
-
 void Simulation::update(double dt) {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
         if (new_p) {
@@ -73,7 +45,6 @@ void Simulation::update(double dt) {
     for (auto& point : points) {
         point.integrate(dt);
     }
-    move_screen(dt);
 }
 
 void Simulation::add_point(sf::Vector2f mouse) {

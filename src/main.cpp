@@ -29,6 +29,7 @@ int main() {
     ui_text.setString("Density: " + std::to_string(sim.get_density()));
 
     sf::View view = window.getView();
+    sf::Vector2f movement(0, 0);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -57,11 +58,37 @@ int main() {
                 case sf::Keyboard::Q:
                     sim.set_density(sim.get_density() - 1);
                     break;
+                case sf::Keyboard::W:
+                    movement.y = -1;
+                    break;
+                case sf::Keyboard::A:
+                    movement.x = -1;
+                    break;
+                case sf::Keyboard::S:
+                    movement.y = 1;
+                    break;
+                case sf::Keyboard::D:
+                    movement.x = 1;
+                    break;
                 default:
                     break;
                 }
                 ui_text.setString("Density: " +
                                   std::to_string(sim.get_density()));
+                break;
+            case sf::Event::KeyReleased:
+                switch (event.key.code) {
+                case sf::Keyboard::W:
+                case sf::Keyboard::S:
+                    movement.y = 0;
+                    break;
+                case sf::Keyboard::A:
+                case sf::Keyboard::D:
+                    movement.x = 0;
+                    break;
+                default:
+                    break;
+                }
                 break;
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
@@ -93,9 +120,14 @@ int main() {
             accumulator -= dt;
         }
 
+        if (movement != sf::Vector2f(0, 0)) {
+            view.move(movement);
+        }
         window.clear(sf::Color::Black);
         window.draw(sim);
+        window.setView(window.getDefaultView());
         window.draw(ui_text);
+        window.setView(view);
 
         window.display();
 
