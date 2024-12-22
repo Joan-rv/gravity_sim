@@ -70,6 +70,12 @@ int main() {
                 case sf::Keyboard::D:
                     movement.x = 1;
                     break;
+                case sf::Keyboard::Up:
+                    view.zoom(1 / 1.1f);
+                    break;
+                case sf::Keyboard::Down:
+                    view.zoom(1.1f);
+                    break;
                 default:
                     break;
                 }
