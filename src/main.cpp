@@ -29,7 +29,8 @@ int main() {
     ui_text.setCharacterSize(18);
     ui_text.setString("Density: " + std::to_string(sim.get_density()));
 
-    sf::View view = window.getView();
+    sf::View main_view = window.getView();
+    sf::View sim_view = window.getView();
     sf::Vector2f movement(0, 0);
     std::string text = "";
 
@@ -42,11 +43,12 @@ int main() {
                 break;
             case sf::Event::Resized: {
                 sf::Vector2f size(event.size.width, event.size.height);
-                sf::Vector2f size_delta = size - view.getSize();
+                sf::Vector2f size_delta = size - sim_view.getSize();
                 // center moves because of size increase
-                view.setCenter(view.getCenter() + size_delta / 2.f);
-                view.setSize(size);
-                window.setView(view);
+                main_view.setCenter(sim_view.getCenter() + size_delta / 2.f);
+                main_view.setSize(size);
+                sim_view.setCenter(sim_view.getCenter() + size_delta / 2.f);
+                sim_view.setSize(size);
                 break;
             }
             case sf::Event::KeyPressed:
@@ -73,10 +75,10 @@ int main() {
                     movement.x = 1;
                     break;
                 case sf::Keyboard::Up:
-                    view.zoom(1 / 1.1f);
+                    sim_view.zoom(1 / 1.1f);
                     break;
                 case sf::Keyboard::Down:
-                    view.zoom(1.1f);
+                    sim_view.zoom(1.1f);
                     break;
                 default:
                     break;
@@ -147,13 +149,13 @@ int main() {
         }
 
         if (movement != sf::Vector2f(0, 0)) {
-            view.move(movement);
+            sim_view.move(movement);
         }
         window.clear(sf::Color::Black);
         window.draw(sim);
-        window.setView(window.getDefaultView());
+        window.setView(main_view);
         window.draw(ui_text);
-        window.setView(view);
+        window.setView(sim_view);
 
         window.display();
 
