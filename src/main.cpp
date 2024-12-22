@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <simulation.hpp>
+#include <stdexcept>
 #include <string>
 
 int main() {
@@ -30,6 +31,7 @@ int main() {
 
     sf::View view = window.getView();
     sf::Vector2f movement(0, 0);
+    std::string text = "";
 
     while (window.isOpen()) {
         sf::Event event;
@@ -92,8 +94,26 @@ int main() {
                 case sf::Keyboard::D:
                     movement.x = 0;
                     break;
+                case sf::Keyboard::Enter:
+                    double new_density;
+                    try {
+                        new_density = std::stod(text);
+                    } catch (const std::invalid_argument&) {
+                    } catch (const std::out_of_range&) {
+                    }
+                    sim.set_density(new_density);
+                    ui_text.setString("Density: " +
+                                      std::to_string(sim.get_density()));
+                    text = "";
+                    break;
                 default:
                     break;
+                }
+                break;
+            case sf::Event::TextEntered:
+                if (('0' <= event.text.unicode && event.text.unicode <= '9') ||
+                    event.text.unicode == '.') {
+                    text += event.text.unicode;
                 }
                 break;
             case sf::Event::MouseButtonPressed:
