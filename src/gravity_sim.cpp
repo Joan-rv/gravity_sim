@@ -94,6 +94,7 @@ void GravitySim::loop() {
                 ui_text.setString("Density: " +
                                   std::to_string(sim.get_density()));
                 text = "";
+                sim.paused = false;
                 break;
             default:
                 break;
@@ -103,6 +104,7 @@ void GravitySim::loop() {
             if (('0' <= event.text.unicode && event.text.unicode <= '9') ||
                 event.text.unicode == '.') {
                 text += event.text.unicode;
+                sim.paused = true;
             }
             break;
         case sf::Event::MouseButtonPressed:
