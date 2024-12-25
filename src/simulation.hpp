@@ -25,6 +25,7 @@ public:
     void mouse_moved(sf::Vector2f mouse);
     void set_density(double density);
     double get_density();
+    bool paused = false;
 
 private:
     std::vector<Point> points;

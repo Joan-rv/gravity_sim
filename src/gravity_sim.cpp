@@ -109,12 +109,14 @@ void GravitySim::loop() {
             if (event.mouseButton.button == sf::Mouse::Button::Left) {
                 sim.add_point(window.mapPixelToCoords(
                     sf::Vector2i(event.mouseButton.x, event.mouseButton.y)));
+                sim.paused = true;
             }
             break;
         case sf::Event::MouseButtonReleased:
             if (event.mouseButton.button == sf::Mouse::Button::Left) {
                 sim.consume_point(window.mapPixelToCoords(
                     sf::Vector2i(event.mouseButton.x, event.mouseButton.y)));
+                sim.paused = false;
             }
             break;
         case sf::Event::MouseMoved: {

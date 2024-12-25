@@ -30,7 +30,7 @@ void Simulation::physics_sim() {
 }
 
 void Simulation::update(double dt) {
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+    if (paused && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
         if (new_p) {
             if (new_p->shape.getRadius() < new_p->max_radius) {
                 new_p->shape.setRadius(new_p->shape.getRadius() + 2 * dt);
@@ -38,12 +38,12 @@ void Simulation::update(double dt) {
                 new_p->shape.setOrigin(new_radius, new_radius);
             }
         }
-        return;
-    }
-    physics_sim();
-    handle_collisions(points);
-    for (auto& point : points) {
-        point.integrate(dt);
+    } else if (!paused) {
+        physics_sim();
+        handle_collisions(points);
+        for (auto& point : points) {
+            point.integrate(dt);
+        }
     }
 }
 
