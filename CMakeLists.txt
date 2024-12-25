@@ -17,7 +17,7 @@ FetchContent_MakeAvailable(SFML)
 target_link_libraries(gravity_sim sfml-graphics sfml-window sfml-system)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(gravity_sim PRIVATE -Wall -Wextra)
+    target_compile_options(gravity_sim PRIVATE -Wall -Wpedantic -Wextra)
 elseif ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     target_compile_options(gravity_sim PRIVATE /W4)
 endif()
