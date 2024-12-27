@@ -1,4 +1,5 @@
 #include "SFML/Window/ContextSettings.hpp"
+#include <boost/dll/runtime_symbol_info.hpp>
 #include <gravity_sim.hpp>
 GravitySim::GravitySim()
     : window(sf::VideoMode(800, 800), "Gravity simulator", sf::Style::Default,
@@ -9,7 +10,16 @@ GravitySim::GravitySim()
              }()),
       sim(), delta_clock(), frame_time{sf::Time::Zero}, dt{0.01},
       accumulator(0.0), movement(0, 0), text{""} {
-    if (!font.loadFromFile("resources/JetBrainsMono-Regular.ttf")) {
+
+    boost::system::error_code ec;
+    boost::filesystem::path program_path = boost::dll::program_location(ec);
+    if (ec) {
+        exit(1);
+    }
+    std::string font_path = (program_path.parent_path() / ".." / "resources" /
+                             "JetBrainsMono-Regular.ttf")
+                                .string();
+    if (!font.loadFromFile(font_path)) {
         exit(1);
     }
     ui_text.setFont(font);

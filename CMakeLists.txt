@@ -8,13 +8,20 @@ add_executable(gravity_sim ${sources})
 
 target_include_directories(gravity_sim PRIVATE src)
 
+set(Boost_USE_STATIC_LIBS OFF) 
+set(Boost_USE_MULTITHREADED ON)  
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost REQUIRED COMPONENTS system filesystem)
+include_directories(${Boost_INCLUDE_DIRS})
+
 include(FetchContent)
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
     GIT_TAG 2.6.x
     FIND_PACKAGE_ARGS COMPONENTS graphics window system)
 FetchContent_MakeAvailable(SFML)
-target_link_libraries(gravity_sim sfml-graphics sfml-window sfml-system)
+
+target_link_libraries(gravity_sim sfml-graphics sfml-window sfml-system ${Boost_LIBRARIES})
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     target_compile_options(gravity_sim PRIVATE -Wall -Wpedantic -Wextra)
