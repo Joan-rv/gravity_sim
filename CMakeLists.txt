@@ -21,7 +21,7 @@ FetchContent_Declare(SFML
     FIND_PACKAGE_ARGS COMPONENTS graphics window system)
 FetchContent_MakeAvailable(SFML)
 
-target_link_libraries(gravity_sim sfml-graphics sfml-window sfml-system ${Boost_LIBRARIES})
+target_link_libraries(gravity_sim sfml-graphics sfml-window ${Boost_LIBRARIES})
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     target_compile_options(gravity_sim PRIVATE -Wall -Wpedantic -Wextra)
