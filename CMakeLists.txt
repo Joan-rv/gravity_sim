@@ -11,7 +11,7 @@ target_include_directories(gravity_sim PRIVATE src)
 set(Boost_USE_STATIC_LIBS OFF) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost REQUIRED COMPONENTS system filesystem)
+find_package(Boost CONFIG COMPONENTS system filesystem)
 include_directories(${Boost_INCLUDE_DIRS})
 
 include(FetchContent)
