@@ -11,6 +11,7 @@ private:
     sf::RenderWindow window;
     Simulation sim;
     sf::Clock delta_clock;
+    sf::Clock cursor_clock;
     sf::Time frame_time;
     const double dt;
     double accumulator;
@@ -20,4 +21,6 @@ private:
     sf::View sim_view;
     sf::Vector2f movement;
     std::string text;
+    std::string cursor;
+    bool is_inputing;
 };

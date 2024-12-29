@@ -1,4 +1,5 @@
 #include "SFML/Window/ContextSettings.hpp"
+#include <SFML/System/Time.hpp>
 #include <boost/dll/runtime_symbol_info.hpp>
 #include <gravity_sim.hpp>
 GravitySim::GravitySim()
@@ -8,8 +9,9 @@ GravitySim::GravitySim()
                  settings.antialiasingLevel = 8;
                  return settings;
              }()),
-      sim(), delta_clock(), frame_time{sf::Time::Zero}, dt{0.01},
-      accumulator(0.0), movement(0, 0), text{""} {
+      sim(), delta_clock(), cursor_clock(), frame_time{sf::Time::Zero},
+      dt{0.01}, accumulator(0.0), movement(0, 0), text{""}, cursor{""},
+      is_inputing{false} {
 
     boost::system::error_code ec;
     boost::filesystem::path program_path = boost::dll::program_location(ec);
@@ -104,6 +106,7 @@ void GravitySim::loop() {
                 ui_text.setString("Density: " +
                                   std::to_string(sim.get_density()));
                 text = "";
+                is_inputing = false;
                 sim.paused = false;
                 break;
             default:
@@ -114,6 +117,7 @@ void GravitySim::loop() {
             if (('0' <= event.text.unicode && event.text.unicode <= '9') ||
                 event.text.unicode == '.') {
                 text += event.text.unicode;
+                is_inputing = true;
                 sim.paused = true;
             }
             break;
@@ -151,6 +155,17 @@ void GravitySim::loop() {
 
     if (movement != sf::Vector2f(0, 0)) {
         sim_view.move(movement);
+    }
+    if (is_inputing) {
+        if (cursor_clock.getElapsedTime() >= sf::milliseconds(500)) {
+            cursor_clock.restart();
+            if (cursor == "_") {
+                cursor = "";
+            } else {
+                cursor = "_";
+            }
+        }
+        ui_text.setString("Density: " + text + cursor);
     }
     window.clear(sf::Color::Black);
     window.draw(sim);
