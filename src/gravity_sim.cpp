@@ -1,7 +1,9 @@
 #include "SFML/Window/ContextSettings.hpp"
 #include <SFML/System/Time.hpp>
 #include <boost/dll/runtime_symbol_info.hpp>
+#include <cmath>
 #include <gravity_sim.hpp>
+#include <iostream>
 GravitySim::GravitySim()
     : window(sf::VideoMode(800, 800), "Gravity simulator", sf::Style::Default,
              [] {
@@ -74,12 +76,6 @@ void GravitySim::loop() {
             case sf::Keyboard::D:
                 movement.x = 1;
                 break;
-            case sf::Keyboard::Up:
-                sim_view.zoom(1 / 1.1f);
-                break;
-            case sf::Keyboard::Down:
-                sim_view.zoom(1.1f);
-                break;
             default:
                 break;
             }
@@ -138,6 +134,11 @@ void GravitySim::loop() {
         case sf::Event::MouseMoved: {
             sim.mouse_moved(window.mapPixelToCoords(
                 sf::Vector2i(event.mouseMove.x, event.mouseMove.y)));
+            break;
+        case sf::Event::MouseWheelScrolled:
+            if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
+                sim_view.zoom(pow(1.1f, event.mouseWheelScroll.delta));
+            }
             break;
         }
 
