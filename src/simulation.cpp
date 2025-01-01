@@ -93,9 +93,8 @@ void Simulation::mouse_moved(sf::Vector2f mouse) {
         float radius = new_p->shape.getRadius();
 
         sf::Vector2f mouse_p_vec = mouse - pos;
-        sf::Vector2f vel_normal = mouse_p_vec / vec::length(mouse_p_vec);
         float vel_length = vec::length(mouse_p_vec) - radius;
-        float angle = 180.0 / PI * atan2f(vel_normal.y, vel_normal.x);
+        float angle = 180.0 / PI * atan2f(mouse_p_vec.y, mouse_p_vec.x);
 
         if (vel_length > 0) {
             new_p->arrow.set_length(vel_length);
