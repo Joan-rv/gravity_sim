@@ -71,9 +71,9 @@ void Simulation::add_point(sf::Vector2f mouse) {
 
 void Simulation::consume_point(sf::Vector2f mouse) {
     if (new_p) {
-        sf::Vector2f vec = mouse - new_p->shape.getPosition();
-        sf::Vector2f vel_normal = vec / vec::length(vec);
-        float vel_length = vec::length(vec) - new_p->shape.getRadius();
+        sf::Vector2f mouse_p_vec = mouse - new_p->shape.getPosition();
+        sf::Vector2f vel_normal = mouse_p_vec / vec::length(mouse_p_vec);
+        float vel_length = vec::length(mouse_p_vec) - new_p->shape.getRadius();
         sf::Vector2f start_vel = {0, 0};
         if (vel_length > 0) {
             start_vel = vel_length * vel_normal;
@@ -92,13 +92,13 @@ void Simulation::mouse_moved(sf::Vector2f mouse) {
         sf::Vector2f pos = new_p->shape.getPosition();
         float radius = new_p->shape.getRadius();
 
-        sf::Vector2f vec = mouse - pos;
-        sf::Vector2f vel_normal = vec / vec::length(vec);
-        float vec_length = vec::length(vec) - radius;
+        sf::Vector2f mouse_p_vec = mouse - pos;
+        sf::Vector2f vel_normal = mouse_p_vec / vec::length(mouse_p_vec);
+        float vel_length = vec::length(mouse_p_vec) - radius;
         float angle = 180.0 / PI * atan2f(vel_normal.y, vel_normal.x);
 
-        if (vec_length > 0) {
-            new_p->arrow.set_length(vec_length);
+        if (vel_length > 0) {
+            new_p->arrow.set_length(vel_length);
             new_p->arrow.set_rotation(angle);
         } else {
             new_p->arrow.set_length(0);
