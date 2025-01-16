@@ -21,7 +21,7 @@ FetchContent_Declare(SFML
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM
-    FIND_PACKAGE_ARGS COMPONENTS graphics window)
+    FIND_PACKAGE_ARGS 2 COMPONENTS graphics window)
 FetchContent_MakeAvailable(SFML)
 
 target_link_libraries(gravity_sim sfml-graphics sfml-window ${Boost_LIBRARIES})
